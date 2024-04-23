@@ -1,9 +1,5 @@
 -- Создание сущности с мобильными телефонами
 
--- Инструкция по использованию платформы
-
-
-
 -- Создайте таблицу (сущность) с мобильными телефонами mobile_phones. При создании необходимо использовать DDL-команды.
 -- Перечень полей (атрибутов):
 -- id – числовой тип, автоинкремент, первичный ключ;
@@ -21,3 +17,27 @@
 -- P20 Pro	Huawei	341	36000
 -- Важно: Чтобы проверка прошла успешно, перед нажатием кнопки Проверить студент должен написать запрос и нажать кнопку Выполнить.
 
+-- При написании запросов указывайте не только имя таблицы, но и схему.
+-- Название вашей схемы - itresume10375684
+-- Например, itresume10375684.tablename
+-- Вы работаете с PostgreSQL
+-- Введите свой код ниже
+
+-- Вы работаете с PostgreSQL
+-- Введите свой код ниже
+CREATE TABLE IF NOT EXISTS itresume10375684.mobile_phones (
+    id SERIAL PRIMARY KEY,
+    product_name VARCHAR(255) NOT NULL,
+    manufacturer VARCHAR(255) NOT NULL,
+    product_count INT,
+    price INT
+);
+
+INSERT INTO itresume10375684.mobile_phones (product_name, manufacturer, product_count, price)
+VALUES ('iPhone X', 'Apple', 156, 76000),
+       ('iPhone 8', 'Apple', 180, 51000),
+       ('Galaxy S9', 'Samsung', 21, 56000),
+       ('Galaxy S8', 'Samsung', 124, 41000),
+       ('P20 Pro', 'Huawei', 341, 36000);
+       
+SELECT * FROM itresume10375684.mobile_phones;
