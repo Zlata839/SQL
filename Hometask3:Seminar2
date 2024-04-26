@@ -1,0 +1,80 @@
+-- Создание внешнего ключа
+
+-- Имеется таблица (сущность) с мобильными телефонами mobile_phones.
+-- У сущности имеются следующие поля(атрибуты):
+-- id – идентификатор;
+-- product_name – название;
+-- manufacturer – производитель;
+-- product_count – количество;
+-- price – цена.
+
+-- Сущность mobile_phones имеет следующие записи:
+
+-- id	product_name	manufacturer	product_count	price
+-- 1	iPhone X	Apple	156	76000
+-- 2	iPhone 8	Apple	180	51000
+-- 3	Galaxy S9	Samsung	21	56000
+-- 4	Galaxy S8	Samsung	124	41000
+-- 5	P20 Pro	Huawei	341	36000
+-- Имеется таблица-справочник (сущность) производителей manufacturer.
+-- У сущности имеются следующие поля(атрибуты):
+-- id – идентификатор;
+-- name – название.
+
+-- Сущность manufacturer имеет следующие записи:
+
+-- id	name
+-- 1	Apple
+-- 2	Samsung
+-- 3	Huawei
+-- Создайте для сущности mobile_phones внешний ключ manufacturer_id (идентификатор производителя), направленный на атрибут id сущности manufacturer. Установите каскадное обновление - CASCADE, а при удалении записи из сущности manufacturer – SET NULL.
+
+-- Используя CRUD-операцию UPDATE обновите данные в атрибуте manufacturer_id сущности mobile_phones согласно значений, имеющихся в атрибуте manufacturer.
+
+-- Удалите атрибут manufacturer из сущности mobile_phones.
+
+-- Выведите идентификатор, название и идентификатор производителя сущности mobile_phones.
+
+
+PostgreSQL 13.10
+-- При написании запросов указывайте не только имя таблицы, но и схему.
+-- Название вашей схемы - itresume10375684
+-- Например, itresume10375684.tablename
+-- Вы работаете с PostgreSQL
+-- Введите свой код ниже
+ALTER TABLE itresume10375684.mobile_phones 
+ADD COLUMN manufacturer_id INT;
+
+ALTER TABLE itresume10375684.mobile_phones 
+ADD FOREIGN KEY (manufacturer_id) REFERENCES manufacturer (id) 
+ON UPDATE CASCADE ON DELETE SET NULL;
+
+UPDATE itresume10375684.mobile_phones  SET manufacturer_id = 1 WHERE manufacturer = 'Apple';
+UPDATE itresume10375684.mobile_phones  SET manufacturer_id = 2 WHERE manufacturer = 'Samsung';
+UPDATE itresume10375684.mobile_phones  SET manufacturer_id = 3 WHERE manufacturer = 'Huawei';
+
+ALTER TABLE itresume10375684.mobile_phones
+DROP COLUMN manufacturer;
+
+SELECT id, product_name, manufacturer_id
+FROM itresume10375684.mobile_phones;
+
+-- Вариант 2
+ALTER TABLE itresume10375684.mobile_phones 
+ADD COLUMN manufacturer_id INT;
+
+ALTER TABLE itresume10375684.mobile_phones 
+ADD FOREIGN KEY (manufacturer_id) REFERENCES manufacturer (id) 
+ON UPDATE CASCADE
+ON DELETE SET NULL;
+
+UPDATE itresume10375684.mobile_phones
+SET manufacturer_id = manufacturer.id
+FROM manufacturer
+WHERE mobile_phones.manufacturer = manufacturer.name;
+
+ALTER TABLE itresume10375684.mobile_phones
+DROP COLUMN manufacturer;
+
+SELECT id, product_name, manufacturer_id
+FROM itresume10375684.mobile_phones;
