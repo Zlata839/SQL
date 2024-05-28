@@ -1,0 +1,68 @@
+-- 1. Создайте функцию, которая принимает кол-во сек и формат их в кол-во дней часов.
+-- Пример: 123456 ->'1 days 10 hours 17 minutes 36 seconds '
+
+
+DROP PROCEDURE IF EXISTS change_format;
+DELIMITER // 
+CREATE PROCEDURE change_format
+(
+	IN seconds INT    
+)
+BEGIN
+    DECLARE dd INT;
+    DECLARE hh INT;
+    DECLARE mm INT;
+    DECLARE ss INT;
+      SET dd = FLOOR(seconds / (60 * 60 * 24));
+      SET hh = FLOOR((seconds % (60 * 60 * 24)) / (60 * 60));
+      SET mm = FLOOR((seconds % (60 * 60)) / 60);
+      SET ss = FLOOR(seconds % 60);
+      SET @result = CONCAT(dd, ' days ', hh, ' hours ', mm, ' min ', ss, ' sec ');
+  END //
+
+DELIMITER ;
+
+CALL change_format(123456);
+
+SELECT @result AS 'Day and Time';
+
+-- Вариант с IF
+
+DROP PROCEDURE IF EXISTS change_format1;
+DELIMITER // 
+CREATE PROCEDURE change_format1
+DELIMITER //
+
+CREATE PROCEDURE change_format1(seconds int) 
+
+	BEGIN
+	  DECLARE days_value INT;
+	  DECLARE hours_value INT;
+	  DECLARE minutes_value INT;
+	  
+	  -- считаем дни
+	  IF seconds >= 86400 THEN
+		SET days_value = seconds DIV 86400;
+		SET seconds = seconds % 86400;
+	  END IF;
+
+	  -- считаем часы
+	  IF seconds >= 3600 THEN
+		SET hours_value = seconds DIV 3600;
+		SET seconds = seconds % 3600; 
+	  END IF;
+
+	  -- считаем минуты / секунды
+	  IF seconds >= 60 THEN
+		SET minutes_value = seconds DIV 60;
+		SET seconds = seconds % 60;
+	  END IF;
+      
+      -- склеиваем дни/часы/минуты/секунды
+	  SET @result = CONCAT((days_value AS CHAR), ' дней ', (hours_value AS CHAR), ' час ', (minutes_value AS CHAR), ' мин ', (seconds AS CHAR), ' сек.');
+	   
+	END //
+
+CALL change_format1(123456);
+
+SELECT @result AS 'Day and Time';
