@@ -59,7 +59,7 @@ CREATE PROCEDURE change_format1(seconds int)
 	  END IF;
       
       -- склеиваем дни/часы/минуты/секунды
-	  SET @result = CONCAT((days_value AS CHAR), ' дней ', (hours_value AS CHAR), ' час ', (minutes_value AS CHAR), ' мин ', (seconds AS CHAR), ' сек.');
+	  SET @result = CONCAT(CAST(days_value AS CHAR), ' дней ', CAST(hours_value AS CHAR), ' час ', CAST(minutes_value AS CHAR), ' мин ', CAST(seconds AS CHAR), ' сек.');
 	   
 	END //
 
